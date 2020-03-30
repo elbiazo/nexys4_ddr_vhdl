@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Sun Mar 22 22:31:34 2020
+| Date         : Sun Mar 29 15:11:51 2020
 | Host         : DESKTOP-B3FLJGH running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file accel_spi_top_control_sets_placed.rpt
 | Design       : accel_spi_top
@@ -74,22 +74,22 @@ Table of Contents
 |     Clock Signal     |                              Enable Signal                             | Set/Reset Signal | Slice Load Count | Bel Load Count |
 +----------------------+------------------------------------------------------------------------+------------------+------------------+----------------+
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[0]        | BTNC_IBUF        |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[3]        | BTNC_IBUF        |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[1]        | BTNC_IBUF        |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[7]        | BTNC_IBUF        |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[5]        | BTNC_IBUF        |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[2]        | BTNC_IBUF        |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[6]        | BTNC_IBUF        |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[5]        | BTNC_IBUF        |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[7]        | BTNC_IBUF        |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[4]        | BTNC_IBUF        |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[1]        | BTNC_IBUF        |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[3]        | BTNC_IBUF        |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/E[2]        | BTNC_IBUF        |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/vga_y_t[3]_i_1_n_0                              | BTNC_IBUF        |                1 |              4 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/vga_x_t[4]_i_1_n_0                              | BTNC_IBUF        |                2 |              5 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/seg7_controller_i/pulse_generator_i/load        | BTNC_IBUF        |                1 |              7 |
 |  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/E[0]                                  | BTNC_IBUF        |                3 |             10 |
 |  CLK100MHZ_IBUF_BUFG |                                                                        |                  |                7 |             12 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_u_ins/pulse_counter[22]_i_1_n_0    | BTNC_IBUF        |                5 |             23 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_d_ins/pulse_counter[22]_i_1__1_n_0 | BTNC_IBUF        |                4 |             23 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_l_ins/pulse_counter[22]_i_1__2_n_0 | BTNC_IBUF        |                5 |             23 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_r_ins/pulse_counter[22]_i_1__0_n_0 | BTNC_IBUF        |                5 |             23 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_u_ins/pulse_counter[22]_i_1_n_0    | BTNC_IBUF        |                5 |             23 |
 |  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/pulse_25mhz                           | BTNC_IBUF        |                8 |             24 |
 |  CLK100MHZ_IBUF_BUFG |                                                                        | BTNC_IBUF        |               14 |             54 |
 +----------------------+------------------------------------------------------------------------+------------------+------------------+----------------+
