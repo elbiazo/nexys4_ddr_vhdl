@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1585509001">
+  <File Type="BITSTR-BMM" Name="accel_spi_top_bd.bmm"/>
   <File Type="ROUTE-PWR" Name="accel_spi_top_power_routed.rpt"/>
   <File Type="PA-TCL" Name="accel_spi_top.tcl"/>
-  <File Type="BITSTR-BMM" Name="accel_spi_top_bd.bmm"/>
+  <File Type="OPT-DCP" Name="accel_spi_top_opt.dcp"/>
   <File Type="ROUTE-PWR-SUM" Name="accel_spi_top_power_summary_routed.pb"/>
   <File Type="REPORTS-TCL" Name="accel_spi_top_reports.tcl"/>
-  <File Type="OPT-DCP" Name="accel_spi_top_opt.dcp"/>
   <File Type="OPT-DRC" Name="accel_spi_top_drc_opted.rpt"/>
   <File Type="OPT-HWDEF" Name="accel_spi_top.hwdef"/>
   <File Type="PWROPT-DCP" Name="accel_spi_top_pwropt.dcp"/>
@@ -24,21 +24,21 @@
   <File Type="ROUTE-BLACKBOX-DCP" Name="accel_spi_top_routed_bb.dcp"/>
   <File Type="ROUTE-DRC" Name="accel_spi_top_drc_routed.rpt"/>
   <File Type="ROUTE-DRC-PB" Name="accel_spi_top_drc_routed.pb"/>
-  <File Type="ROUTE-DRC-RPX" Name="accel_spi_top_drc_routed.rpx"/>
   <File Type="BITSTR-LTX" Name="accel_spi_top.ltx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="accel_spi_top_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-RPX" Name="accel_spi_top_drc_routed.rpx"/>
   <File Type="BITSTR-MMI" Name="accel_spi_top.mmi"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="accel_spi_top_methodology_drc_routed.rpt"/>
   <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="accel_spi_top_methodology_drc_routed.rpx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="accel_spi_top_methodology_drc_routed.pb"/>
   <File Type="BITSTR-SYSDEF" Name="accel_spi_top.sysdef"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="accel_spi_top_methodology_drc_routed.pb"/>
   <File Type="ROUTE-PWR-RPX" Name="accel_spi_top_power_routed.rpx"/>
   <File Type="ROUTE-STATUS" Name="accel_spi_top_route_status.rpt"/>
   <File Type="ROUTE-STATUS-PB" Name="accel_spi_top_route_status.pb"/>
   <File Type="ROUTE-TIMINGSUMMARY" Name="accel_spi_top_timing_summary_routed.rpt"/>
   <File Type="ROUTE-TIMING-PB" Name="accel_spi_top_timing_summary_routed.pb"/>
   <File Type="ROUTE-TIMING-RPX" Name="accel_spi_top_timing_summary_routed.rpx"/>
-  <File Type="ROUTE-CLK" Name="accel_spi_top_clock_utilization_routed.rpt"/>
   <File Type="RDI-RDI" Name="accel_spi_top.vdi"/>
+  <File Type="ROUTE-CLK" Name="accel_spi_top_clock_utilization_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW" Name="accel_spi_top_bus_skew_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW-PB" Name="accel_spi_top_bus_skew_routed.pb"/>
   <File Type="ROUTE-BUS-SKEW-RPX" Name="accel_spi_top_bus_skew_routed.rpx"/>
@@ -49,8 +49,8 @@
   <File Type="BITSTR-NKY" Name="accel_spi_top.nky"/>
   <File Type="PDI-FILE" Name="accel_spi_top.pdi"/>
   <File Type="RCFI_FILE" Name="accel_spi_top.rcfi"/>
-  <File Type="CFI_FILE" Name="accel_spi_top.cfi"/>
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="CFI_FILE" Name="accel_spi_top.cfi"/>
   <File Type="RNPI_FILE" Name="accel_spi_top.rnpi"/>
   <File Type="NPI_FILE" Name="accel_spi_top.npi"/>
   <File Type="RBD_FILE" Name="accel_spi_top.rbd"/>

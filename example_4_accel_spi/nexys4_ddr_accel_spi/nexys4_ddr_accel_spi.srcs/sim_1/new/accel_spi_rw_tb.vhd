@@ -54,11 +54,9 @@ begin
 		
 		wait for 100 ns;
 		reset <= '0';
-		
 		--TODO: Add Verification for DATA_X, Y, Z, and ID_AD/1D
 		--TODO: Verify acl_enabled goes high after initial write
 		--			This can be done through the waveform viewer or by writing checks in the testbench
-		
 		wait;
 	end process;
 	

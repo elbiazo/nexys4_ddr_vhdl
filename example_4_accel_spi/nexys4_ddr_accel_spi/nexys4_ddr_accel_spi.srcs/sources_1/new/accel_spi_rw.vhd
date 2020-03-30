@@ -64,6 +64,9 @@ architecture Behavioral of accel_spi_rw is
     signal timer_start : std_logic := '0';
     signal timer_max : integer := 0;
     signal timer_cntr : integer := 0;
+
+    signal mosi_bytes : unsigned(23 downto 0) := (others=>'0');
+    signal miso_data : unsigned(23 downto 0) := (others=>'0');
 begin
     cmd_fsm : process(clk, reset)
     begin
@@ -75,70 +78,55 @@ begin
                     cmd_state <= w_pow_ctl_on;
                 -- Write to Accel to power on and start reading
                 when w_pow_ctl_on =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0A2d02";
-                    cmd_state <= done_pow_ctl_on;
+                    if(spi_done = '1') then
+                        cmd_state <= done_pow_ctl_on;
+                    end if;
                 when done_pow_ctl_on =>
-                    if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_id_ad;
-                    end if;
-                -- Read Analog Device ID
+                    cmd_state <= r_id_ad;
                 when r_id_ad =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0B0000";
-                    cmd_state <= done_id_ad;
+                    if(spi_done = '1') then
+                        cmd_state <= done_id_ad;
+                    end if;
                 when done_id_ad =>
-                    if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_id_1d;
-                    end if;
-                -- Read MEMS device ID
+                    cmd_state <= r_id_1d;
                 when r_id_1d =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0B0100";
-                    cmd_state <= done_id_1d;
+                    if(spi_done = '1') then
+                        cmd_state <= done_id_1d;
+                    end if;
                 when done_id_1d =>
-                    if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_x;
-                    end if;
-                -- Read X data
+                    cmd_state <= r_x;
                 when r_x =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0B0800";
-                    cmd_state <= done_x;
+                    if(spi_done = '1') then
+                        cmd_state <= done_x;
+                    end if;
                 when done_x =>
-                    if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_y;
-                    end if;
-                -- Read Y data
+                    cmd_state <= r_y;
                 when r_y =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0B0900";
-                    cmd_state <= done_y;
+                    if(spi_done = '1') then
+                        cmd_state <= done_y;
+                    end if;
                 when done_y =>
-                    if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_z;
-                    end if;
-                -- Read Z data
+                    cmd_state <= r_z;
                 when r_z =>
-                    spi_start <= '1';
-                    to_spi_bytes <= x"0B0A00";
-                    cmd_state <= done_z;
-                when done_z =>
                     if(spi_done = '1') then
-                        spi_done <= '0';
-                        cmd_state <= r_id_ad;
+                        cmd_state <= done_z;
                     end if;
+                when done_z =>
+                    cmd_state <= r_id_ad;
                 when others =>
                     cmd_state <= idle;
             end case;
         end if;
     end process cmd_fsm;
-
+    spi_start <= '1' when (cmd_state = idle) or (cmd_state = done_pow_ctl_on) or (cmd_state = done_id_ad) or 
+                    (cmd_state = done_id_1d) or (cmd_state = done_x) or (cmd_state = done_y) or (cmd_state = done_z) else '0';
+    to_spi_bytes <= x"0A2D02" when cmd_state = idle else
+                    x"0B0000" when (cmd_state = done_pow_ctl_on) or (cmd_state = done_z) else
+                    x"0B0100" when cmd_state = done_id_ad else
+                    x"0B0800" when cmd_state = done_id_1d else
+                    x"0B0900" when cmd_state = done_x else
+                    x"0B0A00" when cmd_state = done_y else
+                    x"000000";
 
 
     spi_fsm : process(clk, reset)
@@ -164,7 +152,6 @@ begin
                         spi_state <= inc_sclk_cntr;
                     end if;
                 when inc_sclk_cntr =>
-                    sclk_cntr <= sclk_cntr + 1;
                     spi_state <= chk_sclk_cntr;
                 when chk_sclk_cntr =>
                     if(sclk_cntr = 24) then
@@ -175,19 +162,30 @@ begin
                 when set_cs_hi =>
                     spi_state <= wait_100ms;
                 when wait_100ms =>
-                    if(timer_done = '1' and spi_done <= '1') then
+                    if(timer_done = '1') then
                         spi_state <= idle;
                     end if;
             end case;
         end if;
     end process spi_fsm;
-    CSb <= '1' when spi_state = idle and spi_state = wait_100ms else '0';
-    timer_start <= '1' when (spi_state = set_cs_low) and (spi_state = sclk_hi) and (spi_state = sclk_lo) else '0';
+    CSb <= '1' when spi_state = idle or spi_state = wait_100ms else '0';
+    timer_start <= '1' when (spi_state = set_cs_low) or (spi_state = sclk_hi) or (spi_state = sclk_lo) or (spi_state = wait_100ms) else '0';
     timer_max <= 19 when spi_state = set_cs_low else
-                 49 when spi_state = sclk_hi and spi_state = sclk_lo else
+                 49 when spi_state = sclk_hi or spi_state = sclk_lo else
                  100000 when spi_state = wait_100ms else 0;
     SCLK <= '1' when spi_state = sclk_hi else '0';
-    spi_done <= '1' when spi_state = wait_100ms else '0';
+    spi_done <= '1' when (spi_state = wait_100ms) and (timer_done = '1') else '0';
+    
+    sclk_counter_proc : process(clk,reset)
+    begin
+        if(rising_edge(clk)) then
+            if(spi_state = wait_100ms) then
+                sclk_cntr <= 0;
+            elsif(spi_state = inc_sclk_cntr) then
+                sclk_cntr <= sclk_cntr + 1;
+            end if;
+        end if;
+    end process sclk_counter_proc;
 
     fsm_timer : process(clk, reset)
     begin
@@ -208,42 +206,41 @@ begin
 
     p2s_proc : process(clk, reset)
     begin
-        if(clk = '1') then
-            spi_start <= '0';
-        elsif(rising_edge(clk)) then
-            if(spi_start = '1' and spi_state = sclk_hi and timer_done = '1') then
-                MOSI <= to_spi_bytes(23);
-                to_spi_bytes <= std_logic_vector(shift_left(unsigned(to_spi_bytes), 1));
+        if(rising_edge(clk)) then
+            if(spi_start = '1') then
+                mosi_bytes <= unsigned(to_spi_bytes);
+            elsif(spi_state = sclk_hi and timer_done = '1') then
+                MOSI <= std_logic(mosi_bytes(23));
+                mosi_bytes <= shift_left(mosi_bytes, 1);
             end if;
         end if;
     end process p2s_proc;
 
     s2p_proc : process(clk, reset)
-        variable miso_data : unsigned(7 downto 0) := (others=>'0');
     begin
-        if(clk = '1') then
-            spi_start <= '0';
-        elsif(rising_edge(clk)) then
-            if(spi_state = chk_sclk_cntr and sclk_cntr < 24) then
-                -- Get the last 8 bits    
-                if(sclk_cntr < 15) then
-                    miso_data := shift_left(miso_data, 1);
-                    miso_data(0) := MISO;
-                end if;
+        if(rising_edge(clk)) then
+            if(spi_state = sclk_lo) then
+                miso_data(0) <= MISO;
+            elsif(spi_state = chk_sclk_cntr and sclk_cntr < 24) then
+                miso_data <= shift_left(miso_data, 1);
             elsif(spi_state = set_cs_hi) then
                 case cmd_state is
                     when r_id_ad =>
-                        ID_AD <= std_logic_vector(miso_data);
+                        ID_AD <= std_logic_vector(miso_data(7 downto 0));
                     when r_id_1d =>
-                        ID_1D <= std_logic_vector(miso_data);
+                        ID_1D <= std_logic_vector(miso_data(7 downto 0));
                     when r_x =>
-                        DATA_X <= std_logic_vector(miso_data);
+                        DATA_X <= std_logic_vector(miso_data(7 downto 0));
                     when r_y =>
-                        DATA_Y <= std_logic_vector(miso_data);
+                        DATA_Y <= std_logic_vector(miso_data(7 downto 0));
                     when r_z =>
-                        DATA_Z <= std_logic_vector(miso_data);
+                        DATA_Z <= std_logic_vector(miso_data(7 downto 0));
                     when others =>
-                        spi_start <='0';
+                        ID_AD <= (others=>'0');
+                        ID_1D <= (others=>'0');
+                        DATA_X <= (others=>'0');
+                        DATA_Y <= (others=>'0');
+                        DATA_Z <= (others=>'0');
                 end case;
             end if;
         end if;
