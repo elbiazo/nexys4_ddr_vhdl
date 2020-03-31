@@ -210,16 +210,16 @@ begin
             if(spi_start = '1') then
                 mosi_bytes <= unsigned(to_spi_bytes);
             elsif(spi_state = sclk_hi and timer_done = '1') then
-                MOSI <= std_logic(mosi_bytes(23));
                 mosi_bytes <= shift_left(mosi_bytes, 1);
             end if;
         end if;
     end process p2s_proc;
+    MOSI <= std_logic(mosi_bytes(23));
 
     s2p_proc : process(clk, reset)
     begin
         if(rising_edge(clk)) then
-            if(spi_state = sclk_lo) then
+            if(spi_state = sclk_hi) then
                 miso_data(0) <= MISO;
             elsif(spi_state = chk_sclk_cntr and sclk_cntr < 24) then
                 miso_data <= shift_left(miso_data, 1);
@@ -245,4 +245,5 @@ begin
             end if;
         end if;
     end process s2p_proc;
+
 end Behavioral;

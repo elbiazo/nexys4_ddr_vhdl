@@ -60,7 +60,13 @@ entity accel_spi_top is
             VGA_B : out STD_LOGIC_VECTOR(3 downto 0);
             
             VGA_HS : out STD_LOGIC;
-            VGA_VS : out STD_LOGIC
+            VGA_VS : out STD_LOGIC;
+
+            -- Accelerometer
+            ACL_MOSI  : out  std_logic;
+            ACL_SCLK  : out  std_logic;
+            ACL_MISO  : in std_logic;
+            ACL_CSN   : out std_logic
         );
 end accel_spi_top;
 
@@ -72,32 +78,73 @@ architecture Behavioral of accel_spi_top is
     
     signal vga_x : integer := 0;
     signal vga_y : integer := 0;
+
+    signal DATA_X : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal DATA_Y : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal DATA_Z : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal ID_AD : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal ID_1D : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     
+    signal vga_x_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal vga_y_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 begin
 
-    vga_driver_ins : entity vga_driver port map(
-            clk    => CLK100MHZ,
-            reset  => BTNC,
-            vga_x => vga_x,
-            vga_y => vga_y,
-            vga_hs => VGA_HS,
-            vga_vs => VGA_VS,
-            vga_r  => VGA_R,
-            vga_g  => VGA_G,
-            vga_b  => VGA_B
+     vga_driver_ins : entity vga_driver port map(
+             clk    => CLK100MHZ,
+             reset  => BTNC,
+             vga_x => vga_x,
+             vga_y => vga_y,
+             vga_hs => VGA_HS,
+             vga_vs => VGA_VS,
+             vga_r  => VGA_R,
+             vga_g  => VGA_G,
+             vga_b  => VGA_B
+         );
+        
+     vga_red_controller_ins : entity vga_red_controller port map(
+             CLK100MHZ     => CLK100MHZ,         
+             LED           => LED,      
+             SEG7_CATH     => SEG7_CATH,
+             AN            => AN,       
+             vga_x         => vga_x,    
+             vga_y         => vga_y,
+             BTNC          => BTNC,
+             BTNL          => BTNL,
+             BTNR          => BTNR,
+             BTNU          => BTNU,
+             BTND          => BTND
+         );
+   
+	accel_i : entity accel_spi_rw port map(
+            clk => CLK100MHZ,
+            reset =>  BTNC,
+            --Values from Accel
+            DATA_X => DATA_X,
+            DATA_Y => DATA_Y,
+            DATA_Z => DATA_Z,
+            ID_AD => ID_AD,
+            ID_1D => ID_1D,
+            --SPI Signals
+            CSb => ACL_CSN,
+            MOSI => ACL_MOSI,
+            SCLK => ACL_SCLK,
+            MISO => ACL_MISO
         );
         
-    vga_red_controller_ins : entity vga_red_controller port map(
-            CLK100MHZ     => CLK100MHZ,         
-            LED           => LED,      
-            SEG7_CATH     => SEG7_CATH,
-            AN            => AN,       
-            vga_x         => vga_x,    
-            vga_y         => vga_y,
-            BTNC          => BTNC,
-            BTNL          => BTNL,
-            BTNR          => BTNR,
-            BTNU          => BTNU,
-            BTND          => BTND
-        );
+        vga_x_slv <= std_logic_vector(to_unsigned(vga_x, vga_x_slv'length));
+        vga_y_slv <= std_logic_vector(to_unsigned(vga_y, vga_y_slv'length));
+        
+        seg7_controller_i : entity seg7_controller 
+        port map( clk => CLK100MHZ,
+                  reset => btnc,
+                  char_7 => ID_AD(7 downto 4),
+                  char_6 => ID_AD(3 downto 0),
+                  char_5 => ID_1D(7 downto 4),
+                  char_4 => ID_1D(3 downto 0),
+                  char_3 => DATA_X(7 downto 4),
+                  char_2 => DATA_X(3 downto 0),
+                  char_1 => DATA_Y(7 downto 4),
+                  char_0 => DATA_Y(3 downto 0),
+                  seg7_cath => SEG7_CATH,
+                  an => AN);
 end Behavioral;

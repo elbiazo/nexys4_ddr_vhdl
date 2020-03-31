@@ -2,8 +2,8 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Sun Mar 29 15:10:04 2020
-# Process ID: 8252
+# Start of session at: Mon Mar 30 21:42:14 2020
+# Process ID: 428
 # Current directory: E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.runs/synth_1
 # Command line: vivado.exe -log accel_spi_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source accel_spi_top.tcl
 # Log file: E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.runs/synth_1/accel_spi_top.vds

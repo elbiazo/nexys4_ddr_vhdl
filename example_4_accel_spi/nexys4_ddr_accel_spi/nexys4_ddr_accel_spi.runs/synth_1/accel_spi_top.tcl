@@ -17,6 +17,8 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param chipscope.maxJobs 3
+set_param xicom.use_bs_reader 1
 set_msg_config -id {Common 17-41} -limit 10000000
 create_project -in_memory -part xc7a100tcsg324-1
 
@@ -32,12 +34,13 @@ set_property board_part digilentinc.com:nexys4_ddr:part0:1.1 [current_project]
 set_property ip_output_repo e:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_vhdl -library xil_defaultlib {
+  E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/accel_spi_rw.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/pulse_generator.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/vga_driver.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/debounce_btn.vhd
+  E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/vga_red_controller.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/set_seg7_hex.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/seg7_controller.vhd
-  E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/vga_red_controller.vhd
   E:/workspace/nexys4_ddr_practice/example_4_accel_spi/nexys4_ddr_accel_spi/nexys4_ddr_accel_spi.srcs/sources_1/new/accel_spi_top.vhd
 }
 # Mark all dcp files as not used in implementation to prevent them from being

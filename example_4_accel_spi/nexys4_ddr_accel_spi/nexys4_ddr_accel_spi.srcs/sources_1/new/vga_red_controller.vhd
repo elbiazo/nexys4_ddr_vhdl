@@ -60,14 +60,7 @@ architecture Behavioral of vga_red_controller is
     
     -- Pulse that will be HIGH every 1 second. Used as enable for shift_seg_left process.
     signal pulse_1hz : std_logic;
-    signal char_7 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_6 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_5 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_4 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_3 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_2 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_1 : STD_LOGIC_VECTOR (3 downto 0);
-    signal char_0 : STD_LOGIC_VECTOR (3 downto 0);
+
     signal vga_x_t : unsigned(4 downto 0) := (others=>'0');
     signal vga_y_t : unsigned(3 downto 0) := (others=>'0');
     signal seg_count : unsigned(3 downto 0) := (others => '0');
@@ -209,23 +202,6 @@ begin
         end if;
     end process;
 
-    char_0 <= std_logic_vector(vga_y_t);
-    char_2 <= std_logic_vector(vga_x_t(3 downto 0)); -- truncate if it is greater than 0xf
-    char_3 <= x"0" when(vga_x_t < b"10000") else x"1";
-    
-    seg7_controller_i : entity seg7_controller 
-        port map( clk => CLK100MHZ,
-                  reset => btnc,
-                  char_7 => char_7,
-                  char_6 => char_6,
-                  char_5 => char_5,
-                  char_4 => char_4,
-                  char_3 => char_3,
-                  char_2 => char_2,
-                  char_1 => char_1,
-                  char_0 => char_0,
-                  seg7_cath => seg7_cath,
-                  an => an);
     vga_x <= to_integer(vga_x_t);
     vga_y <= to_integer(vga_y_t);
 end Behavioral;
