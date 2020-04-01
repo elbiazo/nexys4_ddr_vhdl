@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Eric Biazo 
 -- 
 -- Create Date: 03/03/2020 10:55:42 PM
 -- Design Name: 
@@ -42,10 +42,8 @@ entity accel_spi_top is
             BTNR : in STD_LOGIC;
             BTNU : in STD_LOGIC;
             BTND : in STD_LOGIC;     
-               
             -- Switches
             SW : in std_logic_vector(15 downto 0);
-            
             -- Clock
             CLK100MHZ : in STD_LOGIC;
             
@@ -53,18 +51,14 @@ entity accel_spi_top is
             -- 7 Segment  
             SEG7_CATH : out STD_LOGIC_VECTOR(7 downto 0);
             AN :out STD_LOGIC_VECTOR(7 downto 0);
-            
             -- LEDs
             LED : out STD_LOGIC_VECTOR(15 downto 0);
-            
             -- VGA
             VGA_R : out STD_LOGIC_VECTOR(3 downto 0);
             VGA_G : out STD_LOGIC_VECTOR(3 downto 0);
             VGA_B : out STD_LOGIC_VECTOR(3 downto 0);
-            
             VGA_HS : out STD_LOGIC;
             VGA_VS : out STD_LOGIC;
-
             -- Accelerometer
             ACL_MOSI  : out  std_logic;
             ACL_SCLK  : out  std_logic;
@@ -74,29 +68,18 @@ entity accel_spi_top is
 end accel_spi_top;
 
 architecture Behavioral of accel_spi_top is
-    signal seg_count : unsigned(3 downto 0) := (others => '0');
-    signal debounced_signal : std_logic := '0';
-    signal btn_pressed : std_logic := '0';
-    signal pulse : std_logic := '0';
-    
+    -- Signals for VGA
     signal vga_x : integer := 0;
     signal vga_y : integer := 0;
 
-    signal vga_x_btn : integer := 0;
-    signal vga_y_btn : integer := 0;
-
-    signal vga_x_accel : integer := 0;
-    signal vga_y_accel : integer := 0;
-
+    -- Signals from Accelerometer
     signal DATA_X : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal DATA_Y : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal DATA_Z : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal ID_AD : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal ID_1D : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     
-    signal vga_x_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-    signal vga_y_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-
+    -- Signals for 7 segment display
     signal char_7 : std_logic_vector(3 downto 0) := (others => '0');
     signal char_6 : std_logic_vector(3 downto 0) := (others => '0');
     signal char_5 : std_logic_vector(3 downto 0) := (others => '0');
@@ -105,10 +88,11 @@ architecture Behavioral of accel_spi_top is
     signal char_2 : std_logic_vector(3 downto 0) := (others => '0');
     signal char_1 : std_logic_vector(3 downto 0) := (others => '0');
     signal char_0 : std_logic_vector(3 downto 0) := (others => '0');
-begin
-    vga_x_slv <= std_logic_vector(to_unsigned(vga_x, vga_x_slv'length));
-    vga_y_slv <= std_logic_vector(to_unsigned(vga_y, vga_y_slv'length));
+    signal vga_x_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+    signal vga_y_slv : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
+begin
+    -- Process that controls left side of 7 segment displays.
     left_seg_proc : process(CLK100MHZ, BTNC)
     begin
         if(BTNC = '1') then
@@ -141,11 +125,15 @@ begin
         end if;
     end process left_seg_proc;
 
+    -- Converts vga to slv so that it can be printed out in 7 seg display.
+    vga_x_slv <= std_logic_vector(to_unsigned(vga_x, vga_x_slv'length));
+    vga_y_slv <= std_logic_vector(to_unsigned(vga_y, vga_y_slv'length));
     char_3 <= vga_x_slv(7 downto 4);
     char_2 <= vga_x_slv(3 downto 0);
     char_1 <= vga_y_slv(7 downto 4);
     char_0 <= vga_y_slv(3 downto 0);
 
+    -- Component that drives VGA monitor.
     vga_driver_ins : entity vga_driver port map(
             clk    => CLK100MHZ,
             reset  => BTNC,
@@ -158,6 +146,7 @@ begin
             vga_b  => VGA_B
          );
         
+    -- Component that gives VGA and Accelometer data.
      vga_red_controller_ins : entity vga_red_controller
         port map(
             CLK100MHZ     => CLK100MHZ,         
@@ -185,9 +174,7 @@ begin
             MISO => ACL_MISO
         );
    
-        
-
-        
+        -- Component that drives 7 segment display.
         seg7_controller_i : entity seg7_controller 
         port map( clk => CLK100MHZ,
                   reset => btnc,

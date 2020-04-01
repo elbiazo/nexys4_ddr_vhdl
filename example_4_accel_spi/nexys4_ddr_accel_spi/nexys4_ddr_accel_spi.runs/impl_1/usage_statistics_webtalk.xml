@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Tue Mar 31 21:09:51 2020'>
+<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Tue Mar 31 22:11:55 2020'>
 <section name="__ROOT__" level="0" order="1" description="">
  <section name="software_version_and_target_device" level="1" order="1" description="">
   <keyValuePair key="beta" value="FALSE" description="" />
   <keyValuePair key="build_version" value="2708876" description="" />
-  <keyValuePair key="date_generated" value="Tue Mar 31 21:09:51 2020" description="" />
+  <keyValuePair key="date_generated" value="Tue Mar 31 22:11:55 2020" description="" />
   <keyValuePair key="os_platform" value="WIN64" description="" />
   <keyValuePair key="product_version" value="Vivado v2019.2 (64-bit)" description="" />
   <keyValuePair key="project_id" value="6dd97625897c44f2bf005a6a553e60a9" description="" />
-  <keyValuePair key="project_iteration" value="26" description="" />
+  <keyValuePair key="project_iteration" value="27" description="" />
   <keyValuePair key="random_id" value="bdecc361386a53b2a8ce6b1d8e6884f4" description="" />
   <keyValuePair key="registration_id" value="bdecc361386a53b2a8ce6b1d8e6884f4" description="" />
   <keyValuePair key="route_design" value="TRUE" description="" />
@@ -500,10 +500,10 @@
    <keyValuePair key="-verilog_define" value="default::[not_specified]" description="" />
   </section>
   <section name="usage" level="2" order="2" description="">
-   <keyValuePair key="elapsed" value="00:00:55s" description="" />
+   <keyValuePair key="elapsed" value="00:00:43s" description="" />
    <keyValuePair key="hls_ip" value="0" description="" />
-   <keyValuePair key="memory_gain" value="698.574MB" description="" />
-   <keyValuePair key="memory_peak" value="1432.551MB" description="" />
+   <keyValuePair key="memory_gain" value="693.750MB" description="" />
+   <keyValuePair key="memory_peak" value="1428.797MB" description="" />
   </section>
  </section>
  <section name="unisim_transformation" level="1" order="9" description="">
@@ -556,9 +556,9 @@
    <keyValuePair key="addsrcwizard_specify_or_create_constraint_files" value="1" description="" />
    <keyValuePair key="addsrcwizard_specify_simulation_specific_hdl_files" value="1" description="" />
    <keyValuePair key="basedialog_apply" value="1" description="" />
-   <keyValuePair key="basedialog_cancel" value="9" description="" />
+   <keyValuePair key="basedialog_cancel" value="10" description="" />
    <keyValuePair key="basedialog_ok" value="62" description="" />
-   <keyValuePair key="basedialog_yes" value="37" description="" />
+   <keyValuePair key="basedialog_yes" value="38" description="" />
    <keyValuePair key="boardchooser_board_table" value="2" description="" />
    <keyValuePair key="boardchooser_name" value="1" description="" />
    <keyValuePair key="closeplanner_yes" value="1" description="" />
@@ -573,7 +573,7 @@
    <keyValuePair key="expruntreepanel_exp_run_tree_table" value="5" description="" />
    <keyValuePair key="filesetpanel_file_set_panel_tree" value="367" description="" />
    <keyValuePair key="filesetpanel_messages" value="3" description="" />
-   <keyValuePair key="flownavigatortreepanel_flow_navigator_tree" value="244" description="" />
+   <keyValuePair key="flownavigatortreepanel_flow_navigator_tree" value="245" description="" />
    <keyValuePair key="flownavigatortreepanel_open" value="1" description="" />
    <keyValuePair key="gettingstartedview_create_new_project" value="1" description="" />
    <keyValuePair key="graphicalview_zoom_fit" value="42" description="" />
@@ -616,13 +616,13 @@
    <keyValuePair key="pacommandnames_simulation_reset" value="6" description="" />
    <keyValuePair key="pacommandnames_simulation_run" value="6" description="" />
    <keyValuePair key="pacommandnames_simulation_run_behavioral" value="78" description="" />
-   <keyValuePair key="paviews_code" value="37" description="" />
+   <keyValuePair key="paviews_code" value="39" description="" />
    <keyValuePair key="paviews_device" value="2" description="" />
    <keyValuePair key="paviews_project_summary" value="56" description="" />
    <keyValuePair key="programdebugtab_open_recently_opened_target" value="7" description="" />
    <keyValuePair key="programdebugtab_open_target" value="6" description="" />
-   <keyValuePair key="programdebugtab_program_device" value="29" description="" />
-   <keyValuePair key="programfpgadialog_program" value="31" description="" />
+   <keyValuePair key="programdebugtab_program_device" value="30" description="" />
+   <keyValuePair key="programfpgadialog_program" value="32" description="" />
    <keyValuePair key="programfpgadialog_specify_bitstream_file" value="1" description="" />
    <keyValuePair key="progressdialog_background" value="1" description="" />
    <keyValuePair key="progressdialog_cancel" value="3" description="" />
@@ -671,13 +671,13 @@
    <keyValuePair key="editdelete" value="7" description="" />
    <keyValuePair key="fliptoviewtaskimplementation" value="1" description="" />
    <keyValuePair key="launchopentarget" value="1" description="" />
-   <keyValuePair key="launchprogramfpga" value="30" description="" />
+   <keyValuePair key="launchprogramfpga" value="31" description="" />
    <keyValuePair key="newproject" value="1" description="" />
    <keyValuePair key="openhardwaremanager" value="17" description="" />
    <keyValuePair key="openrecenttarget" value="2" description="" />
    <keyValuePair key="programdevice" value="1" description="" />
    <keyValuePair key="reportmethodology" value="1" description="" />
-   <keyValuePair key="runbitgen" value="37" description="" />
+   <keyValuePair key="runbitgen" value="38" description="" />
    <keyValuePair key="runimplementation" value="2" description="" />
    <keyValuePair key="runsynthesis" value="5" description="" />
    <keyValuePair key="settopnode" value="5" description="" />

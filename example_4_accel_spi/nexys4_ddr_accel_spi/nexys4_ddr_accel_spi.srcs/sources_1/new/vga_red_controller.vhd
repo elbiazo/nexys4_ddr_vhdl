@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Eric Biazo
 -- 
 -- Create Date: 03/10/2020 07:25:39 PM
 -- Design Name: 
@@ -97,9 +97,9 @@ architecture Behavioral of vga_red_controller is
     signal data_y_t : STD_LOGIC_VECTOR(7 downto 0) := (others=>'0');
 
 begin
-    ------------------------------------------------------
+    -------------------
     -- Debounce Buttons
-    ------------------------------------------------------
+    -------------------
     debounce_btn_u_ins : entity debounce_btn port map(
             btn_debounce_in => BTNU,
             btn_reset_in    => BTNC,
@@ -126,10 +126,14 @@ begin
             clk_in          => CLK100MHZ,
             debounced_signal   => debounced_btnl
         );  
+    ---------------------------
+    -- ENd of deboucing buttons
+    ---------------------------
 
-    ------------------------------------------------------
-    -- Detect Button Press and Increment
-    ------------------------------------------------------
+
+    ----------------------------------
+    -- Edge detection for button press
+    ----------------------------------
     detect_btnu_pressed: process(CLK100MHZ)
         variable last_inc : std_logic := '0';
     begin
@@ -177,7 +181,13 @@ begin
             last_inc := debounced_btnl;
         end if;
     end process;
-   
+    --------------------------------
+    -- End of button edge detections
+    --------------------------------
+
+    ----------------------------------------
+    -- Edge detection for accelerameter data
+    ----------------------------------------
     detect_accel_u: process(CLK100MHZ)
         variable accel_reset : std_logic := '0';
     begin
@@ -233,6 +243,10 @@ begin
             end if;
         end if;
     end process;
+    -------------------------------
+    -- End of accel edge detection.
+    -------------------------------
+
 
     -- Calculates the red box index.              
     set_seg_proc : process(CLK100MHZ)
@@ -243,6 +257,7 @@ begin
             vga_y_t <= (others=>'0');
             vga_x_t <= (others=>'0');
         elsif(rising_edge(CLK100MHZ)) then
+            -- If SW 1 is low then use button to control the red box.
             if(SW(1) = '0') then
                 if(btnu_enable = '1') then
                     if(vga_y_t = b"0000") then -- if it was all 0 then make it 0xe
@@ -275,7 +290,8 @@ begin
                         vga_x_t <= vga_x_t - 1;
                     end if;
                 end if;
-            elsif(SW(1) = '1') then-- Accelerameter Controls
+            -- If SW 1 is high then use accelerometer to controll the red box
+            elsif(SW(1) = '1') then
                 if(accel_u_enable = '1') then
                     if(vga_y_t = b"0000") then -- if it was all 0 then make it 0xe
                         vga_y_t <= x"e";
@@ -312,26 +328,27 @@ begin
     end process;
 
 
+    -- Component that gives you accel data via SPI
     accel_i : entity accel_spi_rw
     port map(
         clk => CLK100MHZ,
         reset =>  BTNC,
-        --Values from Accel
-        DATA_X => data_y_t,
-        DATA_Y => data_x_t,
+        -- Output from accel
+        DATA_X => data_y_t, -- Flip data x and y to align it with vga output as NORTH and SOUTH.
+        DATA_Y => data_x_t, -- Flip data y and x to have pmod as East and West.
         DATA_Z => DATA_Z,
         ID_AD => ID_AD,
         ID_1D => ID_1D,
-        --SPI Signals
+        -- SPI Signals
         CSb => CSb,
         MOSI => MOSI,
         SCLK => SCLK,
         MISO => MISO
     );
 
+    -- Set output for data and vga.
     DATA_X <= data_x_t;
     DATA_Y <= data_y_t;
-
     vga_x <= to_integer(vga_x_t);
     vga_y <= to_integer(vga_y_t);
 end Behavioral;

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Eric Biazo
 -- 
 -- Create Date: 03/29/2020 04:03:41 PM
 -- Design Name: 
@@ -48,26 +48,35 @@ entity accel_spi_rw is
 end accel_spi_rw;
 
 architecture Behavioral of accel_spi_rw is
+
+    -- Type definition for cmd and spi state
     type cmd_state_type is (idle, w_pow_ctl_on, done_pow_ctl_on, r_id_ad, done_id_ad, r_id_1d, done_id_1d, r_x, done_x, r_y, done_y, r_z, done_z);
+    type spi_state_type is (idle, set_cs_low, sclk_hi, sclk_lo, wait_100ms, set_cs_hi, chk_sclk_cntr, inc_sclk_cntr);
+
+    -- Signal used in cmd state fsm
     signal cmd_state : cmd_state_type := idle;
     signal spi_start : STD_LOGIC := '0';
     signal to_spi_bytes : std_logic_vector(23 downto 0) := (others=>'0');
     signal spi_done : std_logic := '0';
     
-    -- Signal for SPI FSM
-    type spi_state_type is (idle, set_cs_low, sclk_hi, sclk_lo, wait_100ms, set_cs_hi, chk_sclk_cntr, inc_sclk_cntr);
+    -- Signal used in spi fsm
+
     signal spi_state : spi_state_type := idle;
 
     signal sclk_cntr : integer := 0;
-    
+   
+    -- Signal for fsm timer process
     signal timer_done : std_logic := '0';
     signal timer_start : std_logic := '0';
     signal timer_max : integer := 0;
     signal timer_cntr : integer := 0;
 
-    signal mosi_bytes : unsigned(23 downto 0) := (others=>'0');
+    -- Signal for Parallel/Serial Interface process
+    signal mosi_data : unsigned(23 downto 0) := (others=>'0');
     signal miso_data : unsigned(23 downto 0) := (others=>'0');
 begin
+
+    -- Command FSM that powers on then infinitely reads register 0x0 -> 0x1 -> 0x8 -> 0x9 -> 0xA
     cmd_fsm : process(clk, reset)
     begin
         if(reset = '1') then
@@ -83,30 +92,35 @@ begin
                     end if;
                 when done_pow_ctl_on =>
                     cmd_state <= r_id_ad;
+                -- Read ID AD (0x0)
                 when r_id_ad =>
                     if(spi_done = '1') then
                         cmd_state <= done_id_ad;
                     end if;
                 when done_id_ad =>
                     cmd_state <= r_id_1d;
+                -- Read ID 1D (0x1)
                 when r_id_1d =>
                     if(spi_done = '1') then
                         cmd_state <= done_id_1d;
                     end if;
                 when done_id_1d =>
                     cmd_state <= r_x;
+                -- Read X (0x8)
                 when r_x =>
                     if(spi_done = '1') then
                         cmd_state <= done_x;
                     end if;
                 when done_x =>
                     cmd_state <= r_y;
+                -- Read Y (0x9)
                 when r_y =>
                     if(spi_done = '1') then
                         cmd_state <= done_y;
                     end if;
                 when done_y =>
                     cmd_state <= r_z;
+                -- Read Z(0xA)
                 when r_z =>
                     if(spi_done = '1') then
                         cmd_state <= done_z;
@@ -118,6 +132,8 @@ begin
             end case;
         end if;
     end process cmd_fsm;
+
+    -- Outputs for Command FSM
     spi_start <= '1' when (cmd_state = idle) or (cmd_state = done_pow_ctl_on) or (cmd_state = done_id_ad) or 
                     (cmd_state = done_id_1d) or (cmd_state = done_x) or (cmd_state = done_y) or (cmd_state = done_z) else '0';
     to_spi_bytes <= x"0A2D02" when cmd_state = idle else
@@ -129,6 +145,7 @@ begin
                     x"000000";
 
 
+    -- SPI FSM that handles write,read, and timing.
     spi_fsm : process(clk, reset)
     begin
         if(reset = '1') then
@@ -168,6 +185,8 @@ begin
             end case;
         end if;
     end process spi_fsm;
+
+    -- Outputs for SPI FSM
     CSb <= '1' when spi_state = idle or spi_state = wait_100ms else '0';
     timer_start <= '1' when (spi_state = set_cs_low) or (spi_state = sclk_hi) or (spi_state = sclk_lo) or (spi_state = wait_100ms) else '0';
     timer_max <= 19 when spi_state = set_cs_low else
@@ -176,6 +195,8 @@ begin
     SCLK <= '1' when spi_state = sclk_hi else '0';
     spi_done <= '1' when (spi_state = wait_100ms) and (timer_done = '1') else '0';
     
+
+    -- SCLK counter that is used to create SCLK
     sclk_counter_proc : process(clk,reset)
     begin
         if(rising_edge(clk)) then
@@ -187,6 +208,7 @@ begin
         end if;
     end process sclk_counter_proc;
 
+    -- Timer that is used inside SPI FSM
     fsm_timer : process(clk, reset)
     begin
         if(reset = '1') then
@@ -202,20 +224,23 @@ begin
         end if;
     end process fsm_timer;
 
+    -- Output for FSM Timer Counter
     timer_done <= '1' when timer_cntr = timer_max else '0';
 
+    -- Parallel to Serial process that serialize 8 bit data.
     p2s_proc : process(clk, reset)
     begin
         if(rising_edge(clk)) then
             if(spi_start = '1') then
-                mosi_bytes <= unsigned(to_spi_bytes);
+                mosi_data <= unsigned(to_spi_bytes);
             elsif(spi_state = sclk_hi and timer_done = '1') then
-                mosi_bytes <= shift_left(mosi_bytes, 1);
+                mosi_data <= shift_left(mosi_data, 1);
             end if;
         end if;
     end process p2s_proc;
-    MOSI <= std_logic(mosi_bytes(23));
+    MOSI <= std_logic(mosi_data(23));
 
+    -- Serial to Parallel process that creates 8 bit slv from MISO serial input.
     s2p_proc : process(clk, reset)
     begin
         if(rising_edge(clk)) then

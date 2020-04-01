@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Tue Mar 31 21:09:30 2020
+| Date         : Tue Mar 31 22:11:38 2020
 | Host         : DESKTOP-B3FLJGH running 64-bit major release  (build 9200)
 | Command      : report_timing_summary -max_paths 10 -file accel_spi_top_timing_summary_routed.rpt -pb accel_spi_top_timing_summary_routed.pb -rpx accel_spi_top_timing_summary_routed.rpx -warn_on_violation
 | Design       : accel_spi_top
@@ -1194,7 +1194,7 @@ Slack (MET) :             0.138ns  (arrival time - required time)
 Slack (MET) :             0.140ns  (arrival time - required time)
   Source:                 vga_red_controller_ins/accel_i/FSM_onehot_cmd_state_reg[3]/C
                             (rising edge-triggered cell FDCE clocked by sys_clk_pin  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            vga_red_controller_ins/accel_i/mosi_bytes_reg[9]/D
+  Destination:            vga_red_controller_ins/accel_i/mosi_data_reg[9]/D
                             (rising edge-triggered cell FDRE clocked by sys_clk_pin  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             sys_clk_pin
   Path Type:              Hold (Min at Fast Process Corner)
@@ -1220,9 +1220,9 @@ Slack (MET) :             0.140ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
     SLICE_X3Y93          FDCE (Prop_fdce_C_Q)         0.141     1.664 f  vga_red_controller_ins/accel_i/FSM_onehot_cmd_state_reg[3]/Q
                          net (fo=5, routed)           0.088     1.753    vga_red_controller_ins/accel_i/p_1_in
-    SLICE_X2Y93          LUT6 (Prop_lut6_I4_O)        0.045     1.798 r  vga_red_controller_ins/accel_i/mosi_bytes[9]_i_1/O
-                         net (fo=1, routed)           0.000     1.798    vga_red_controller_ins/accel_i/mosi_bytes[9]_i_1_n_0
-    SLICE_X2Y93          FDRE                                         r  vga_red_controller_ins/accel_i/mosi_bytes_reg[9]/D
+    SLICE_X2Y93          LUT6 (Prop_lut6_I4_O)        0.045     1.798 r  vga_red_controller_ins/accel_i/mosi_data[9]_i_1/O
+                         net (fo=1, routed)           0.000     1.798    vga_red_controller_ins/accel_i/mosi_data[9]_i_1_n_0
+    SLICE_X2Y93          FDRE                                         r  vga_red_controller_ins/accel_i/mosi_data_reg[9]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock sys_clk_pin rise edge)
@@ -1233,9 +1233,9 @@ Slack (MET) :             0.140ns  (arrival time - required time)
                          net (fo=1, routed)           0.699     1.136    CLK100MHZ_IBUF
     BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.029     1.165 r  CLK100MHZ_IBUF_BUFG_inst/O
                          net (fo=392, routed)         0.877     2.042    vga_red_controller_ins/accel_i/CLK100MHZ_IBUF_BUFG
-    SLICE_X2Y93          FDRE                                         r  vga_red_controller_ins/accel_i/mosi_bytes_reg[9]/C
+    SLICE_X2Y93          FDRE                                         r  vga_red_controller_ins/accel_i/mosi_data_reg[9]/C
                          clock pessimism             -0.505     1.536    
-    SLICE_X2Y93          FDRE (Hold_fdre_C_D)         0.121     1.657    vga_red_controller_ins/accel_i/mosi_bytes_reg[9]
+    SLICE_X2Y93          FDRE (Hold_fdre_C_D)         0.121     1.657    vga_red_controller_ins/accel_i/mosi_data_reg[9]
   -------------------------------------------------------------------
                          required time                         -1.657    
                          arrival time                           1.798    
@@ -1487,20 +1487,20 @@ Min Period        n/a     FDCE/C      n/a            1.000         10.000      9
 Min Period        n/a     FDCE/C      n/a            1.000         10.000      9.000      SLICE_X0Y98     seg7_controller_i/pulse_generator_i/pulse_cnt_reg[16]/C
 Min Period        n/a     FDCE/C      n/a            1.000         10.000      9.000      SLICE_X0Y98     seg7_controller_i/pulse_generator_i/pulse_cnt_reg[17]/C
 Min Period        n/a     FDCE/C      n/a            1.000         10.000      9.000      SLICE_X0Y98     seg7_controller_i/pulse_generator_i/pulse_cnt_reg[18]/C
-Low Pulse Width   Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_2/CLK
-Low Pulse Width   Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_0/CLK
-Low Pulse Width   Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_2/CLK
-Low Pulse Width   Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_0/CLK
+Low Pulse Width   Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_data_reg_r_2/CLK
+Low Pulse Width   Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_data_reg_r_0/CLK
+Low Pulse Width   Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_data_reg_r_2/CLK
+Low Pulse Width   Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_data_reg_r_0/CLK
 Low Pulse Width   Slow    FDCE/C      n/a            0.500         5.000       4.500      SLICE_X11Y93    vga_driver_ins/h_counter_reg[0]/C
 Low Pulse Width   Slow    FDCE/C      n/a            0.500         5.000       4.500      SLICE_X11Y93    vga_driver_ins/h_counter_reg[1]/C
 Low Pulse Width   Slow    FDCE/C      n/a            0.500         5.000       4.500      SLICE_X11Y93    vga_driver_ins/h_counter_reg[2]/C
 Low Pulse Width   Slow    FDCE/C      n/a            0.500         5.000       4.500      SLICE_X11Y93    vga_driver_ins/h_counter_reg[3]/C
 Low Pulse Width   Slow    FDCE/C      n/a            0.500         5.000       4.500      SLICE_X10Y93    vga_driver_ins/h_counter_reg[4]/C
 Low Pulse Width   Slow    FDRE/C      n/a            0.500         5.000       4.500      SLICE_X8Y92     vga_red_controller_ins/accel_reset_reg__1/C
-High Pulse Width  Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_2/CLK
-High Pulse Width  Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_2/CLK
-High Pulse Width  Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_0/CLK
-High Pulse Width  Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_bytes_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_bytes_reg_r_0/CLK
+High Pulse Width  Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_data_reg_r_2/CLK
+High Pulse Width  Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[5]_srl4___vga_red_controller_ins_accel_i_mosi_data_reg_r_2/CLK
+High Pulse Width  Slow    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_data_reg_r_0/CLK
+High Pulse Width  Fast    SRL16E/CLK  n/a            0.980         5.000       4.020      SLICE_X6Y90     vga_red_controller_ins/accel_i/mosi_data_reg[21]_srl2___vga_red_controller_ins_accel_i_mosi_data_reg_r_0/CLK
 High Pulse Width  Slow    FDRE/C      n/a            0.500         5.000       4.500      SLICE_X2Y84     vga_red_controller_ins/accel_i/sclk_cntr_reg[0]/C
 High Pulse Width  Slow    FDRE/C      n/a            0.500         5.000       4.500      SLICE_X2Y84     vga_red_controller_ins/accel_i/sclk_cntr_reg[2]/C
 High Pulse Width  Slow    FDRE/C      n/a            0.500         5.000       4.500      SLICE_X2Y84     vga_red_controller_ins/accel_i/sclk_cntr_reg[3]/C

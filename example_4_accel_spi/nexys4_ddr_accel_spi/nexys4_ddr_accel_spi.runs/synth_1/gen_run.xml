@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1585703183">
+<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1585706943">
   <File Type="PA-TCL" Name="accel_spi_top.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="accel_spi_top_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="accel_spi_top_reports.tcl"/>
