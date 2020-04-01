@@ -109,10 +109,38 @@ begin
     vga_x_slv <= std_logic_vector(to_unsigned(vga_x, vga_x_slv'length));
     vga_y_slv <= std_logic_vector(to_unsigned(vga_y, vga_y_slv'length));
 
-    char_7 <= DATA_X(7 downto 4);
-    char_6 <= DATA_X(3 downto 0);
-    char_5 <= DATA_Y(7 downto 4);
-    char_4 <= DATA_Y(3 downto 0);
+    left_seg_proc : process(CLK100MHZ, BTNC)
+    begin
+        if(BTNC = '1') then
+            char_7 <= (others=>'0');
+            char_6 <= (others=>'0');
+            char_5 <= (others=>'0');
+            char_4 <= (others=>'0');
+        elsif(rising_edge(CLK100MHZ)) then
+            if(SW(4 downto 3) = b"00") then
+                char_7 <= ID_1D(7 downto 4);
+                char_6 <= ID_1D(3 downto 0);
+                char_5 <= ID_AD(7 downto 4);
+                char_4 <= ID_AD(3 downto 0);
+            elsif(SW(4 downto 3) = b"01") then
+                char_7 <= (others=>'0');
+                char_6 <= (others=>'0');
+                char_5 <= DATA_X(7 downto 4);
+                char_4 <= DATA_X(3 downto 0);
+            elsif(SW(4 downto 3) = b"10") then
+                char_7 <= (others=>'0');
+                char_6 <= (others=>'0');
+                char_5 <= DATA_Y(7 downto 4);
+                char_4 <= DATA_Y(3 downto 0);
+            elsif(SW(4 downto 3) = b"11") then
+                char_7 <= (others=>'0');
+                char_6 <= (others=>'0');
+                char_5 <= DATA_Z(7 downto 4);
+                char_4 <= DATA_Z(3 downto 0);
+            end if;
+        end if;
+    end process left_seg_proc;
+
     char_3 <= vga_x_slv(7 downto 4);
     char_2 <= vga_x_slv(3 downto 0);
     char_1 <= vga_y_slv(7 downto 4);

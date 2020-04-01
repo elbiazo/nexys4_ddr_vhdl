@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Tue Mar 31 20:37:37 2020
+| Date         : Tue Mar 31 21:08:41 2020
 | Host         : DESKTOP-B3FLJGH running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file accel_spi_top_control_sets_placed.rpt
 | Design       : accel_spi_top
@@ -23,8 +23,8 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    29 |
-|    Minimum number of control sets                        |    29 |
+| Total control sets                                       |    32 |
+|    Minimum number of control sets                        |    32 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
 | Unused register locations in slices containing registers |   106 |
@@ -39,11 +39,11 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    29 |
+| Total control sets |    32 |
 | >= 0 to < 4        |     8 |
 | >= 4 to < 6        |     4 |
 | >= 6 to < 8        |     2 |
-| >= 8 to < 10       |     2 |
+| >= 8 to < 10       |     5 |
 | >= 10 to < 12      |     2 |
 | >= 12 to < 14      |     3 |
 | >= 14 to < 16      |     0 |
@@ -59,11 +59,11 @@ Table of Contents
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | No           | No                    | No                     |              13 |            6 |
-| No           | No                    | Yes                    |              57 |           16 |
+| No           | No                    | Yes                    |              73 |           20 |
 | No           | Yes                   | No                     |               8 |            4 |
 | Yes          | No                    | No                     |              18 |            6 |
-| Yes          | No                    | Yes                    |             195 |           56 |
-| Yes          | Yes                   | No                     |              59 |           14 |
+| Yes          | No                    | Yes                    |             195 |           59 |
+| Yes          | Yes                   | No                     |              83 |           17 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -73,35 +73,38 @@ Table of Contents
 +----------------------+------------------------------------------------------------------------+-------------------------------------------------------+------------------+----------------+
 |     Clock Signal     |                              Enable Signal                             |                    Set/Reset Signal                   | Slice Load Count | Bel Load Count |
 +----------------------+------------------------------------------------------------------------+-------------------------------------------------------+------------------+----------------+
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[2]                               | BTNC_IBUF                                             |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[4]                               | BTNC_IBUF                                             |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[3]                               | BTNC_IBUF                                             |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[5]                               | BTNC_IBUF                                             |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[0]                               | BTNC_IBUF                                             |                1 |              1 |
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[6]                               | BTNC_IBUF                                             |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[7]                               | BTNC_IBUF                                             |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[4]                               | BTNC_IBUF                                             |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[1]                               | BTNC_IBUF                                             |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[0]                               | BTNC_IBUF                                             |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[2]                               | BTNC_IBUF                                             |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[5]                               | BTNC_IBUF                                             |                1 |              1 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/E[6]                               | BTNC_IBUF                                             |                1 |              1 |
 |  CLK100MHZ_IBUF_BUFG |                                                                        | vga_red_controller_ins/accel_i/accel_r_enable         |                2 |              4 |
 |  CLK100MHZ_IBUF_BUFG |                                                                        | vga_red_controller_ins/accel_i/accel_u_enable         |                2 |              4 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/vga_y_t                                         | BTNC_IBUF                                             |                1 |              4 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/vga_x_t                                         | BTNC_IBUF                                             |                1 |              5 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/miso_data[7]_i_1_n_0                    |                                                       |                1 |              7 |
-|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/load                               | BTNC_IBUF                                             |                3 |              7 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/DATA_X[7]_i_2_n_0                       | vga_red_controller_ins/accel_i/DATA_X[7]_i_1_n_0      |                1 |              8 |
+|  CLK100MHZ_IBUF_BUFG | seg7_controller_i/pulse_generator_i/load                               | BTNC_IBUF                                             |                4 |              7 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/DATA_X[7]_i_2_n_0                       | vga_red_controller_ins/accel_i/DATA_X[7]_i_1_n_0      |                3 |              8 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/DATA_Z[7]_i_2_n_0                       | vga_red_controller_ins/accel_i/DATA_Z[7]_i_1_n_0      |                1 |              8 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/DATA_Y[7]_i_2_n_0                       | vga_red_controller_ins/accel_i/DATA_Y[7]_i_1_n_0      |                1 |              8 |
-|  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/E[0]                                  | BTNC_IBUF                                             |                4 |             10 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/mosi_bytes[19]_i_1_n_0                  | vga_red_controller_ins/accel_i/mosi_bytes[18]_i_1_n_0 |                4 |             11 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/ID_1D[7]_i_2_n_0                        | vga_red_controller_ins/accel_i/ID_1D[7]_i_1_n_0       |                1 |              8 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/ID_AD[7]_i_2_n_0                        | vga_red_controller_ins/accel_i/ID_AD[7]_i_1_n_0       |                1 |              8 |
+|  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/E[0]                                  | BTNC_IBUF                                             |                3 |             10 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/mosi_bytes[19]_i_1_n_0                  | vga_red_controller_ins/accel_i/mosi_bytes[18]_i_1_n_0 |                2 |             11 |
 |  CLK100MHZ_IBUF_BUFG |                                                                        |                                                       |                6 |             13 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/FSM_onehot_cmd_state[12]_i_1_n_0        | BTNC_IBUF                                             |                4 |             13 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/FSM_onehot_cmd_state[12]_i_1_n_0        | BTNC_IBUF                                             |                3 |             13 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/mosi_bytes[19]_i_1_n_0                  |                                                       |                5 |             13 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_d_ins/pulse_counter[22]_i_1__1_n_0 | BTNC_IBUF                                             |                5 |             23 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_l_ins/pulse_counter[22]_i_1__2_n_0 | BTNC_IBUF                                             |                5 |             23 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_l_ins/pulse_counter[22]_i_1__2_n_0 | BTNC_IBUF                                             |                6 |             23 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_r_ins/pulse_counter[22]_i_1__0_n_0 | BTNC_IBUF                                             |                5 |             23 |
-|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_u_ins/pulse_counter[22]_i_1_n_0    | BTNC_IBUF                                             |                5 |             23 |
-|  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/pulse_25mhz                           | BTNC_IBUF                                             |                7 |             24 |
+|  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/debounce_btn_u_ins/pulse_counter[22]_i_1_n_0    | BTNC_IBUF                                             |                6 |             23 |
+|  CLK100MHZ_IBUF_BUFG | vga_driver_ins/pulse_generator_i/pulse_25mhz                           | BTNC_IBUF                                             |                9 |             24 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/sclk_cntr[0]_i_2_n_0                    | vga_red_controller_ins/accel_i/sclk_cntr[0]_i_1_n_0   |                8 |             32 |
 |  CLK100MHZ_IBUF_BUFG | vga_red_controller_ins/accel_i/timer_start                             | BTNC_IBUF                                             |                8 |             32 |
-|  CLK100MHZ_IBUF_BUFG |                                                                        | BTNC_IBUF                                             |               16 |             57 |
+|  CLK100MHZ_IBUF_BUFG |                                                                        | BTNC_IBUF                                             |               20 |             73 |
 +----------------------+------------------------------------------------------------------------+-------------------------------------------------------+------------------+----------------+
 
 
