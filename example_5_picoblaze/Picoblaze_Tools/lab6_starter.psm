@@ -12,23 +12,24 @@ cold_start:
 ; PUSHBTN(1) is used to subtract 1
 ; PUSHBTN(3) is used to reset design
 
-NAMEREG s3, seg_1_0
-NAMEREG s4, seg_3_2
-NAMEREG s5, btn_debounced
-NAMEREG s6, btn_hold
-NAMEREG s7, switch_debounced
-NAMEREG s8, switch_hold
-NAMEREG s9, switch_3_0
-NAMEREG sA, shl_cntr
-NAMEREG sB, mult_cntr
-NAMEREG sC, multiplicand_left
-NAMEREG sD, multiplicand_right
+NAMEREG s3, seg_1_0 ; 7 seg sw(1:0)
+NAMEREG s4, seg_3_2 ; 7 seg sw(3:2)
+NAMEREG s5, btn_debounced ; debounced btn
+NAMEREG s6, btn_hold ; register used to store btn hold
+NAMEREG s7, switch_debounced ; debounced switch
+NAMEREG s8, switch_hold ; register used to store switch hold
+NAMEREG s9, switch_3_0 ; value from sw(3:0)
+NAMEREG sA, shl_cntr ; counter used for shl operation
+NAMEREG sB, mult_cntr ; counter used for mult operation
+NAMEREG sC, multiplicand_left ; stores seg_3_2 as multiplicand
+NAMEREG sD, multiplicand_right ; store seg_1_0 as multiplicand
 NAMEREG sE, switch_7_4
 
 	reset:
-		LOAD seg_1_0, 00								;reset ALU setpoint to 0
+		; Set every register to 0.
+		LOAD seg_1_0, 00								
 		LOAD seg_3_2, 00
-		OUTPUT seg_1_0, 04							;display reset values
+		OUTPUT seg_1_0, 04							
 		OUTPUT seg_3_2, 05
 		LOAD btn_debounced, 00
 		LOAD btn_hold, 00
@@ -36,6 +37,10 @@ NAMEREG sE, switch_7_4
 		LOAD switch_hold, 00
 		LOAD switch_3_0, 00
 		LOAD shl_cntr, 00
+		LOAD mult_cntr, 00
+		LOAD multiplicand_left, 00
+		LOAD multiplicand_right, 00
+		LOAD switch_7_4, 00
 
 		;; wait for btn 3 to be depressed to exit reset state
 		INPUT btn_debounced, 03
@@ -54,7 +59,7 @@ NAMEREG sE, switch_7_4
 			
 		; Determine if Btn0 was pressed
 		TEST btn_debounced, 01
-		CALL NZ, check_op	; check which swich has been pressed
+		CALL NZ, check_op	; check which switch has been pressed
 			
 		; Determine if Btn3 was pressed
 		TEST btn_debounced, 08
@@ -68,56 +73,64 @@ NAMEREG sE, switch_7_4
 	
 	; Checks switch for which operation it needs to run
 	check_op:
+		; Debounces the switch
 		INPUT switch_debounced, 02 ; store slider
 		CALL del250ms ; delay 250ms
 		INPUT switch_hold, 02 ; store second slider value
 		AND switch_debounced, switch_hold
 
+		; Splits switch in halve and store it in registers
 		LOAD switch_3_0, switch_debounced; Load every switch value to switch_3_0
 		AND switch_3_0, 0F ; Mask to get
 		LOAD switch_7_4, switch_debounced
 		AND switch_7_4, F0
 
-		COMPARE switch_7_4, 10 ; check to see if sw0 is high
+		; check if it is 0b0001_0000 (addition bit)
+		COMPARE switch_7_4, 10 
 		JUMP Z, op_add
 
-		COMPARE switch_7_4, 20 ; check to see if sw1 is high
+		; check if it is 0b0010_0000 (subtraction bit)
+		COMPARE switch_7_4, 20
 		JUMP Z, op_sub
 
-		LOAD shl_cntr, 00
-		COMPARE switch_7_4, 40 ; check to see if sw1 is high
+		; check if it is 0b0100_0000 (shift left bit)
+		LOAD shl_cntr, 00 ; Reset shl_cntr to 0
+		COMPARE switch_7_4, 40
 		JUMP Z, op_shl
 
-		LOAD mult_cntr, 01
-		LOAD multiplicand_left, seg_3_2
-		LOAD multiplicand_right, seg_1_0
-		COMPARE switch_7_4, 80 ; check to see if sw1 is high
+		; check if it is 0b1000_0000 (multiplication bit)
+		LOAD mult_cntr, 01 ; Reset mult_cntr to 1.
+		LOAD multiplicand_left, seg_3_2 ; store seg_3_2 multicand
+		LOAD multiplicand_right, seg_1_0 ; store seg_1_0 multicand
+		COMPARE switch_7_4, 80
 		JUMP Z, op_mult
 
 		RETURN
 
+	; Check if input is valid or not
 	check_multiplier:
-		COMPARE switch_3_0, 00 ; If switch_3_0 is zero
-		JUMP NZ, op_mult ; If it is not zero
+		; If input is not 0, jump to multiplication operation.
+		COMPARE switch_3_0, 00
+		JUMP NZ, op_mult
 		
-		; If it is zero, set seg to zero
-		LOAD seg_1_0, 00
-		LOAD seg_3_2, 00
+		; If it is input is zero, reset.
+		JUMP reset	
 
 		JUMP btnr_opend
+
+	; Loop until mult_cntr == multiplier.
 	op_mult:
 	 	COMPARE mult_cntr, switch_3_0
 		JUMP Z, btnr_opend
 
-		ADD 	seg_1_0, multiplicand_right ; add value from sw(3:0)
-		ADDCY   seg_3_2, multiplicand_left; if there is carry, add the carry bit. 
+		ADD 	seg_1_0, multiplicand_right ; add value from multiplicand_right
+		ADDCY   seg_3_2, multiplicand_left; add value from multiplicand_left + carry
 
 		add mult_cntr, 01
 
 		JUMP op_mult
-
-
-
+	
+	; Loop until shl_cntr == value from sw(3:0)
 	op_shl:
 		COMPARE shl_cntr, switch_3_0 ; see if 10 is zero
 		JUMP Z, btnr_opend
@@ -125,20 +138,18 @@ NAMEREG sE, switch_7_4
 		SL0 seg_1_0 ; shift left once
 		SLA seg_3_2 ; shift every bit if there is carry
 
-
 		ADD shl_cntr, 01 ; add the counter
 
-		
 		JUMP op_shl
-	;	Handles Carry
+
+	; Add
 	op_add:
 		ADD 	seg_1_0, switch_3_0 ; add value from sw(3:0)
 		ADDCY   seg_3_2, 00  ; if there is carry, add the carry bit.
 
 		JUMP btnr_opend
 
-	;	SUBTRACT OPERATION
-	;	Basic Subtract
+ 	; Subtract
 	op_sub:
 		SUB seg_1_0, switch_3_0		; add value from sw(3:0)3
 		SUBCY seg_3_2, 00    ; if there is borrow, subtract the carry bit
@@ -147,8 +158,8 @@ NAMEREG sE, switch_7_4
 
 	btnr_opend:
 		INPUT btn_debounced, 03
-		TEST btn_debounced, 01			;check btn0 and only exit this function if button isn't pressed
-		JUMP NZ, btnr_opend	;stay in this routine until btn is depressed
+		TEST btn_debounced, 01 ; check btn0 and only exit this function if button isn't pressed
+		JUMP NZ, btnr_opend	; stay in this routine until btn is depressed
 		RETURN
 
 	;;HELPER FUNCTIONS FROM TESTPROG (used for delay in top level, added a 10ms delay)
