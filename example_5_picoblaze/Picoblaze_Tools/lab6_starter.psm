@@ -1,0 +1,180 @@
+; Extra ASM to fix issue with Vivado (see documentation), Skips Address 03
+	JUMP cold_start
+	JUMP cold_start
+	JUMP cold_start
+	JUMP cold_start
+; Cold Start
+cold_start:
+
+; SLIDERS are assigned to PORT 02
+; PUSHBTNs are assigned to PORT 03
+; PUSHBTN(0) is used to add 1
+; PUSHBTN(1) is used to subtract 1
+; PUSHBTN(3) is used to reset design
+
+NAMEREG s3, seg_1_0
+NAMEREG s4, seg_3_2
+NAMEREG s5, btn_debounced
+NAMEREG s6, btn_hold
+NAMEREG s7, switch_debounced
+NAMEREG s8, switch_hold
+NAMEREG s9, switch_3_0
+NAMEREG sA, shl_cntr
+NAMEREG sB, mult_cntr
+NAMEREG sC, multiplicand_left
+NAMEREG sD, multiplicand_right
+NAMEREG sE, switch_7_4
+
+	reset:
+		LOAD seg_1_0, 00								;reset ALU setpoint to 0
+		LOAD seg_3_2, 00
+		OUTPUT seg_1_0, 04							;display reset values
+		OUTPUT seg_3_2, 05
+		LOAD btn_debounced, 00
+		LOAD btn_hold, 00
+		LOAD switch_debounced, 00
+		LOAD switch_hold, 00
+		LOAD switch_3_0, 00
+		LOAD shl_cntr, 00
+
+		;; wait for btn 3 to be depressed to exit reset state
+		INPUT btn_debounced, 03
+		TEST btn_debounced, 08
+		JUMP NZ, reset	;stay in reset until 'depressed'
+
+		JUMP mainlp
+		
+	; Main Processing Loop
+	; Runs debouncer on input push btns
+	; Checks current state of push btns to perform operation
+	mainlp:	INPUT btn_debounced, 03	; store push buttons
+		CALL del10ms	; delay 10ms
+		INPUT btn_hold, 03	; store push buttons again
+		AND btn_debounced, btn_hold		; AND push buttons to only keep signals high if held for 10ms
+			
+		; Determine if Btn0 was pressed
+		TEST btn_debounced, 01
+		CALL NZ, check_op	; check which swich has been pressed
+			
+		; Determine if Btn3 was pressed
+		TEST btn_debounced, 08
+		JUMP NZ, reset	; Start Subtraction
+			
+		; Update Displays
+		OUTPUT seg_1_0, 04	; Update Display with ALU REG
+		OUTPUT seg_3_2, 05
+
+		JUMP mainlp
+	
+	; Checks switch for which operation it needs to run
+	check_op:
+		INPUT switch_debounced, 02 ; store slider
+		CALL del250ms ; delay 250ms
+		INPUT switch_hold, 02 ; store second slider value
+		AND switch_debounced, switch_hold
+
+		LOAD switch_3_0, switch_debounced; Load every switch value to switch_3_0
+		AND switch_3_0, 0F ; Mask to get
+		LOAD switch_7_4, switch_debounced
+		AND switch_7_4, F0
+
+		COMPARE switch_7_4, 10 ; check to see if sw0 is high
+		JUMP Z, op_add
+
+		COMPARE switch_7_4, 20 ; check to see if sw1 is high
+		JUMP Z, op_sub
+
+		LOAD shl_cntr, 00
+		COMPARE switch_7_4, 40 ; check to see if sw1 is high
+		JUMP Z, op_shl
+
+		LOAD mult_cntr, 01
+		LOAD multiplicand_left, seg_3_2
+		LOAD multiplicand_right, seg_1_0
+		COMPARE switch_7_4, 80 ; check to see if sw1 is high
+		JUMP Z, op_mult
+
+		RETURN
+
+	check_multiplier:
+		COMPARE switch_3_0, 00 ; If switch_3_0 is zero
+		JUMP NZ, op_mult ; If it is not zero
+		
+		; If it is zero, set seg to zero
+		LOAD seg_1_0, 00
+		LOAD seg_3_2, 00
+
+		JUMP btnr_opend
+	op_mult:
+	 	COMPARE mult_cntr, switch_3_0
+		JUMP Z, btnr_opend
+
+		ADD 	seg_1_0, multiplicand_right ; add value from sw(3:0)
+		ADDCY   seg_3_2, multiplicand_left; if there is carry, add the carry bit. 
+
+		add mult_cntr, 01
+
+		JUMP op_mult
+
+
+
+	op_shl:
+		COMPARE shl_cntr, switch_3_0 ; see if 10 is zero
+		JUMP Z, btnr_opend
+
+		SL0 seg_1_0 ; shift left once
+		SLA seg_3_2 ; shift every bit if there is carry
+
+
+		ADD shl_cntr, 01 ; add the counter
+
+		
+		JUMP op_shl
+	;	Handles Carry
+	op_add:
+		ADD 	seg_1_0, switch_3_0 ; add value from sw(3:0)
+		ADDCY   seg_3_2, 00  ; if there is carry, add the carry bit.
+
+		JUMP btnr_opend
+
+	;	SUBTRACT OPERATION
+	;	Basic Subtract
+	op_sub:
+		SUB seg_1_0, switch_3_0		; add value from sw(3:0)3
+		SUBCY seg_3_2, 00    ; if there is borrow, subtract the carry bit
+
+		JUMP btnr_opend
+
+	btnr_opend:
+		INPUT btn_debounced, 03
+		TEST btn_debounced, 01			;check btn0 and only exit this function if button isn't pressed
+		JUMP NZ, btnr_opend	;stay in this routine until btn is depressed
+		RETURN
+
+	;;HELPER FUNCTIONS FROM TESTPROG (used for delay in top level, added a 10ms delay)
+	delms:
+		INPUT s0,07
+		JUMP delmslp
+	delmslp:
+		INPUT s1,07
+		COMPARE s0,s1
+		JUMP Z, delmslp
+		RETURN
+			
+	del10ms:
+		LOAD s2, F5	;load 245
+		JUMP del10mslp
+	del10mslp:
+		CALL delms
+		ADD s2, 01
+		JUMP NZ, del10mslp
+		RETURN
+
+	del250ms:
+		LOAD s2, 05
+		JUMP del250mslp
+	del250mslp:
+		CALL delms
+		ADD s2, 01
+		JUMP NZ, del250mslp
+		RETURN

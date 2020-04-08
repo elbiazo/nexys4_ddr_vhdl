@@ -38,6 +38,10 @@
 #MIG
 !*.prj
 !*.mem
+
+#Picoblaze
+!*.psm
+
 #Project files
 #XPR  +  *.XML ? XPR (Files are merged into a single XPR file for 2014.1 version)
 #Do NOT ignore *.xpr files
@@ -57,6 +61,7 @@
 !*.vdi
 #C-files
 !*.c
+!*/example_5_picoblaze/Picoblaze_Tools/*.c
 !*.h
 !*.elf
 !*.bmm

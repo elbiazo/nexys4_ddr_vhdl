@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Fri Feb 21 00:45:05 2020
+# Process ID: 4716
+# Current directory: E:/vivado_workspace/nexys4_ddr_pulse_gen/nexys4_ddr_pulse_gen.runs/synth_1
+# Command line: vivado.exe -log lab3_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source lab3_top.tcl
+# Log file: E:/vivado_workspace/nexys4_ddr_pulse_gen/nexys4_ddr_pulse_gen.runs/synth_1/lab3_top.vds
+# Journal file: E:/vivado_workspace/nexys4_ddr_pulse_gen/nexys4_ddr_pulse_gen.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source lab3_top.tcl -notrace
