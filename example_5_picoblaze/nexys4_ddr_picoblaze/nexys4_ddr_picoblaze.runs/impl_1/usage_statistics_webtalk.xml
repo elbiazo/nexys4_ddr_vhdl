@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Mon Apr  6 21:00:33 2020'>
+<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Tue Apr  7 22:28:58 2020'>
 <section name="__ROOT__" level="0" order="1" description="">
  <section name="software_version_and_target_device" level="1" order="1" description="">
   <keyValuePair key="beta" value="FALSE" description="" />
   <keyValuePair key="build_version" value="2708876" description="" />
-  <keyValuePair key="date_generated" value="Mon Apr  6 21:00:33 2020" description="" />
+  <keyValuePair key="date_generated" value="Tue Apr  7 22:28:58 2020" description="" />
   <keyValuePair key="os_platform" value="WIN64" description="" />
   <keyValuePair key="product_version" value="Vivado v2019.2 (64-bit)" description="" />
   <keyValuePair key="project_id" value="4f0fa052a3514726ac7f6b00cd603049" description="" />
-  <keyValuePair key="project_iteration" value="7" description="" />
+  <keyValuePair key="project_iteration" value="25" description="" />
   <keyValuePair key="random_id" value="bdecc361386a53b2a8ce6b1d8e6884f4" description="" />
   <keyValuePair key="registration_id" value="bdecc361386a53b2a8ce6b1d8e6884f4" description="" />
   <keyValuePair key="route_design" value="TRUE" description="" />
@@ -532,8 +532,8 @@
   <section name="usage" level="2" order="2" description="">
    <keyValuePair key="elapsed" value="00:00:42s" description="" />
    <keyValuePair key="hls_ip" value="0" description="" />
-   <keyValuePair key="memory_gain" value="688.684MB" description="" />
-   <keyValuePair key="memory_peak" value="1421.445MB" description="" />
+   <keyValuePair key="memory_gain" value="683.746MB" description="" />
+   <keyValuePair key="memory_peak" value="1417.520MB" description="" />
   </section>
  </section>
  <section name="unisim_transformation" level="1" order="10" description="">
@@ -586,47 +586,54 @@
  </section>
  <section name="vivado_usage" level="1" order="11" description="">
   <section name="gui_handlers" level="2" order="1" description="">
-   <keyValuePair key="basedialog_cancel" value="1" description="" />
-   <keyValuePair key="basedialog_ok" value="8" description="" />
-   <keyValuePair key="basedialog_yes" value="8" description="" />
+   <keyValuePair key="abstractfileview_close" value="1" description="" />
+   <keyValuePair key="basedialog_cancel" value="5" description="" />
+   <keyValuePair key="basedialog_ok" value="11" description="" />
+   <keyValuePair key="basedialog_yes" value="25" description="" />
    <keyValuePair key="boardchooser_board_table" value="2" description="" />
    <keyValuePair key="boardchooser_vendor" value="1" description="" />
    <keyValuePair key="constraintschooserpanel_add_files" value="4" description="" />
    <keyValuePair key="createsrcfiledialog_file_name" value="1" description="" />
-   <keyValuePair key="filesetpanel_file_set_panel_tree" value="41" description="" />
-   <keyValuePair key="flownavigatortreepanel_flow_navigator_tree" value="11" description="" />
+   <keyValuePair key="filesetpanel_file_set_panel_tree" value="49" description="" />
+   <keyValuePair key="flownavigatortreepanel_flow_navigator_tree" value="55" description="" />
    <keyValuePair key="gettingstartedview_create_new_project" value="1" description="" />
    <keyValuePair key="hcodeeditor_search_text_combo_box" value="2" description="" />
    <keyValuePair key="hjfilechooserhelpers_refresh_folder_view_to_reflect_external" value="2" description="" />
    <keyValuePair key="pacommandnames_add_sources" value="4" description="" />
-   <keyValuePair key="pacommandnames_auto_connect_target" value="1" description="" />
+   <keyValuePair key="pacommandnames_auto_connect_target" value="2" description="" />
    <keyValuePair key="pacommandnames_auto_update_hier" value="4" description="" />
-   <keyValuePair key="pacommandnames_open_hardware_manager" value="1" description="" />
-   <keyValuePair key="paviews_code" value="2" description="" />
-   <keyValuePair key="paviews_project_summary" value="4" description="" />
-   <keyValuePair key="programdebugtab_open_target" value="1" description="" />
-   <keyValuePair key="programdebugtab_program_device" value="6" description="" />
-   <keyValuePair key="programfpgadialog_program" value="6" description="" />
+   <keyValuePair key="pacommandnames_open_hardware_manager" value="2" description="" />
+   <keyValuePair key="paviews_code" value="5" description="" />
+   <keyValuePair key="paviews_project_summary" value="9" description="" />
+   <keyValuePair key="programdebugtab_open_recently_opened_target" value="2" description="" />
+   <keyValuePair key="programdebugtab_open_target" value="2" description="" />
+   <keyValuePair key="programdebugtab_program_device" value="21" description="" />
+   <keyValuePair key="programfpgadialog_program" value="21" description="" />
    <keyValuePair key="projectnamechooser_choose_project_location" value="1" description="" />
    <keyValuePair key="projectnamechooser_project_name" value="1" description="" />
    <keyValuePair key="rdicommands_delete" value="2" description="" />
    <keyValuePair key="srcchooserpanel_add_hdl_and_netlist_files_to_your_project" value="2" description="" />
    <keyValuePair key="srcchooserpanel_create_file" value="1" description="" />
    <keyValuePair key="srcmenu_ip_hierarchy" value="4" description="" />
+   <keyValuePair key="syntheticagettingstartedview_recent_projects" value="1" description="" />
+   <keyValuePair key="syntheticastatemonitor_cancel" value="2" description="" />
   </section>
   <section name="java_command_handlers" level="2" order="2" description="">
    <keyValuePair key="addsources" value="4" description="" />
-   <keyValuePair key="autoconnecttarget" value="1" description="" />
+   <keyValuePair key="autoconnecttarget" value="2" description="" />
    <keyValuePair key="editdelete" value="2" description="" />
-   <keyValuePair key="launchprogramfpga" value="6" description="" />
+   <keyValuePair key="launchprogramfpga" value="21" description="" />
    <keyValuePair key="newproject" value="1" description="" />
-   <keyValuePair key="openhardwaremanager" value="4" description="" />
-   <keyValuePair key="runbitgen" value="8" description="" />
-   <keyValuePair key="showview" value="1" description="" />
-   <keyValuePair key="viewtaskprojectmanager" value="3" description="" />
+   <keyValuePair key="openhardwaremanager" value="6" description="" />
+   <keyValuePair key="runbitgen" value="31" description="" />
+   <keyValuePair key="runsynthesis" value="1" description="" />
+   <keyValuePair key="showview" value="2" description="" />
+   <keyValuePair key="toolssettings" value="1" description="" />
+   <keyValuePair key="viewtaskprogramanddebug" value="3" description="" />
+   <keyValuePair key="viewtaskprojectmanager" value="7" description="" />
   </section>
   <section name="other_data" level="2" order="3" description="">
-   <keyValuePair key="guimode" value="1" description="" />
+   <keyValuePair key="guimode" value="2" description="" />
   </section>
   <section name="project_data" level="2" order="4" description="">
    <keyValuePair key="constraintsetcount" value="1" description="" />
