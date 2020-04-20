@@ -1,6 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../nexys4_ddr_7seg.srcs/sim_1/new/quiz2.vhd" \
-
-# Do not sort compile order
-nosort
